@@ -1,3 +1,4 @@
+
 workflows:
   android-workflow:
     name: My Day Android Build
@@ -7,27 +8,22 @@ workflows:
     environment:
       java: 17
 
-    
-scripts:
-  - name: Build My Day APK
-    script: |
-      # Create the missing Android debug keystore
-      keytool -genkeypair -v \
-        -keystore debug.keystore \
-        -storepass android \
-        -alias androiddebugkey \
-        -keypass android \
-        -keyalg RSA \
-        -keysize 2048 \
-        -validity 10000 \
-        -dname "CN=Android Debug,O=Android,C=US"
+    scripts:
+      - name: Build My Day APK
+        script: |
+          keytool -genkeypair -v \
+            -keystore debug.keystore \
+            -storepass android \
+            -alias androiddebugkey \
+            -keypass android \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -dname "CN=Android Debug,O=Android,C=US"
 
-      # Download Gradle 9.3.1
-      curl -L https://services.gradle.org/distributions/gradle-9.3.1-bin.zip -o /tmp/gradle.zip
-      unzip -q /tmp/gradle.zip -d /tmp
+          curl -L https://services.gradle.org/distributions/gradle-9.3.1-bin.zip -o /tmp/gradle.zip
+          unzip -q /tmp/gradle.zip -d /tmp
+          /tmp/gradle-9.3.1/bin/gradle assembleDebug
 
-      # Build APK
-      /tmp/gradle-9.3.1/bin/gradle assembleDebug
-
-artifacts:
-  - app/build/outputs/**/*.apk
+    artifacts:
+      - app/build/outputs/**/*.apk
